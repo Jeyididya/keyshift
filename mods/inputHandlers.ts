@@ -5,6 +5,7 @@ import {
   namedMappings,
   getMappingByName,
 } from "../mappings"
+import { cycleLanguage } from "./languageCycler"
 
 const storage = new Storage()
 
@@ -155,6 +156,10 @@ export async function initializeState() {
   const savedCustom = await storage.get<Record<string, string>>("customMapping")
   customMapping = savedCustom || {}
 
+  availableLanguages = [
+    ...Object.keys(namedMappings),
+  "default"
+  ]
   setActiveMapping(activeMappingName)
 }
 
@@ -176,6 +181,7 @@ export function attachListeners(root: Document | ShadowRoot = document) {
   editables.forEach((el) => {
     if (!el.dataset.listenerAttached) {
       el.addEventListener("keydown", handleKeyDown)
+      el.addEventListener("keydown", cycleLanguage)
       el.addEventListener("focusin", () => (el.dataset.lastChar = ""))
       el.dataset.listenerAttached = "true"
     }
@@ -215,6 +221,7 @@ export function attachListeners(root: Document | ShadowRoot = document) {
 
   if (ytSearch && !ytSearch.dataset.listenerAttached) {
     ytSearch.addEventListener("keydown", handleKeyDown)
+    el.addEventListener("keydown", cycleLanguage)
     ytSearch.addEventListener("focusin", () => (ytSearch!.dataset.lastChar = ""))
     ytSearch.dataset.listenerAttached = "true"
     console.log("✅ Attached listener to YouTube search input")
