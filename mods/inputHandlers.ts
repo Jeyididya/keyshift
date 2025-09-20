@@ -1,4 +1,4 @@
-// src/inputHandler.ts
+// src/mods/inputHandlers.ts
 import { Storage } from "@plasmohq/storage"
 import {
   defaultMapping,
@@ -8,19 +8,17 @@ import {
 
 const storage = new Storage()
 
-// Active character map — dynamically updated
+// State
 export let characterMap: Record<string, string> = { ...defaultMapping }
+export let isEnabled = true
+export let activeMappingName = "default"
+export let customMapping: Record<string, string> = {}
+export let availableLanguages: string[] = []
 
-// Active mapping name (e.g., "amharic", "custom")
-let activeMappingName: string = "default"
+// ------------------------
+// CORE LOGIC (UNCHANGED)
+// ------------------------
 
-// Custom user-defined mapping (separate from presets)
-let customMapping: Record<string, string> = {}
-
-// Enable/disable toggle
-let isEnabled = true
-
-// Core key handler — unchanged
 export function handleKeyDown(event: KeyboardEvent) {
   if (!isEnabled || activeMappingName === "default") return
   if (event.ctrlKey || event.altKey || event.metaKey) return
@@ -35,28 +33,21 @@ export function handleKeyDown(event: KeyboardEvent) {
   let replacement = null
   let comboMatched = false
 
-  // Check combo first
   if (characterMap[combo]) {
-    console.log("--1")
     replacement = characterMap[combo]
     comboMatched = true
     target.dataset.lastChar = replacement
   } else if (characterMap[key]) {
-    console.log("--2")
     replacement = characterMap[key]
     target.dataset.lastChar = replacement
   } else {
-    console.log("--3")
     target.dataset.lastChar = key
     return
   }
 
   if (replacement) {
-    console.log("the replacement", replacement)
     event.preventDefault()
-
     if (comboMatched) deleteLastChar(target)
-
     insertText(target, replacement)
   }
 }
@@ -117,20 +108,25 @@ function insertText(el: HTMLElement, text: string) {
   }
 }
 
-// Set enabled state
+// ------------------------
+// STATE MANAGEMENT
+// ------------------------
+
 export function setEnabled(value: boolean) {
   isEnabled = value
   console.log("Input handler enabled:", isEnabled)
 }
 
-// Switch to named mapping
 export function setActiveMapping(name: string) {
   activeMappingName = name
-    
-  // Load base mapping
-  const base = getMappingByName(name)
 
-  // If custom, merge with saved custom mapping
+  if (name === "default") {
+    characterMap = {}
+    console.log("Default mode — no transformation")
+    return
+  }
+
+  const base = getMappingByName(name)
   if (name === "custom") {
     characterMap = { ...base, ...customMapping }
   } else {
@@ -140,28 +136,118 @@ export function setActiveMapping(name: string) {
   console.log(`Mapping switched to: ${name}`, characterMap)
 }
 
-// Update custom mapping (user-defined pairs)
 export function updateCustomMapping(newMap: Record<string, string>) {
   customMapping = newMap
-
-  // If currently using custom, update active map
   if (activeMappingName === "custom") {
     characterMap = { ...getMappingByName("custom"), ...customMapping }
     console.log("Custom mapping updated:", characterMap)
   }
 }
 
-// Initialize from storage
-export async function initialize() {
+
+export async function initializeState() {
   const savedEnabled = await storage.get<boolean>("isEnabled")
   isEnabled = savedEnabled ?? true
 
-  const savedActiveMapping = await storage.get<string>("activeMapping")
-  activeMappingName = savedActiveMapping || "default"
+  const savedActive = await storage.get<string>("activeMapping")
+  activeMappingName = savedActive || "default"
 
-  const savedCustomMap = await storage.get<Record<string, string>>("customMapping")
-  customMapping = savedCustomMap || {}
+  const savedCustom = await storage.get<Record<string, string>>("customMapping")
+  customMapping = savedCustom || {}
 
-  // Apply active mapping
   setActiveMapping(activeMappingName)
+}
+
+// ------------------------
+// YOUTUBE + SHADOW DOM SUPPORT
+// ------------------------
+
+export function attachListeners(root: Document | ShadowRoot = document) {
+  const selectors = `
+    input:not([type='hidden']):not([disabled]),
+    textarea:not([disabled]),
+    [contenteditable="true"],
+    .ProseMirror[contenteditable="true"],
+    #prompt-textarea
+  `
+
+  const editables = root.querySelectorAll<HTMLElement>(selectors)
+
+  editables.forEach((el) => {
+    if (!el.dataset.listenerAttached) {
+      el.addEventListener("keydown", handleKeyDown)
+      el.addEventListener("focusin", () => (el.dataset.lastChar = ""))
+      el.dataset.listenerAttached = "true"
+    }
+  })
+
+  // Handle Shadow DOM
+  root.querySelectorAll("*").forEach((el) => {
+    if (el.shadowRoot) attachListeners(el.shadowRoot)
+  })
+
+  // ✅ YOUTUBE SEARCH — multiple strategies
+  let ytSearch: HTMLElement | null = null
+
+  // Strategy 1: Direct #search
+  ytSearch = root.querySelector('input#search') as HTMLElement
+
+  // Strategy 2: Inside ytd-searchbox shadow root
+  if (!ytSearch) {
+    const searchBox = root.querySelector('ytd-searchbox')
+    if (searchBox && searchBox.shadowRoot) {
+      ytSearch = searchBox.shadowRoot.querySelector('input#search') as HTMLElement
+    }
+  }
+
+  // Strategy 3: Modern YouTube (2024+)
+  if (!ytSearch) {
+    ytSearch = root.querySelector('input[name="search_query"]') as HTMLElement
+  }
+
+  // Strategy 4: Within #search-input container
+  if (!ytSearch) {
+    const container = root.querySelector('#search-input')
+    if (container) {
+      ytSearch = container.querySelector('input') as HTMLElement
+    }
+  }
+
+  if (ytSearch && !ytSearch.dataset.listenerAttached) {
+    ytSearch.addEventListener("keydown", handleKeyDown)
+    ytSearch.addEventListener("focusin", () => (ytSearch!.dataset.lastChar = ""))
+    ytSearch.dataset.listenerAttached = "true"
+    console.log("✅ Attached listener to YouTube search input")
+  }
+}
+
+export function initializeAdvanced() {
+  attachListeners()
+
+  // Observe dynamic content
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      mutation.addedNodes.forEach((node) => {
+        if (node.nodeType === 1) {
+          const el = node as HTMLElement
+          attachListeners(el)
+
+          // Check if it's a shadow host
+          if (el.shadowRoot) {
+            attachListeners(el.shadowRoot)
+          }
+        }
+      })
+    })
+  })
+
+  observer.observe(document, { childList: true, subtree: true })
+
+  console.log("Intialized advanced listeners for Shadow DOM & YouTube")
+
+  // Re-init after 3s for late-loaded elements
+  setTimeout(() => {
+    initializeAdvanced()
+    console.log("🔁 Re-initialized advanced listeners after 3s")
+  }, 3000)
 }

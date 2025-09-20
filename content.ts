@@ -4,12 +4,16 @@ import {
   setEnabled,
   setActiveMapping,
   updateCustomMapping,
-  initialize,
+// initializeMappings,
+  initializeState,
+  initializeAdvanced
 } from "mods/inputHandlers"
 
-initialize()
 
-document.addEventListener("keydown", handleKeyDown)
+initializeState()
+
+
+initializeAdvanced()
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "TOGGLE_KEYSHIFT") {
