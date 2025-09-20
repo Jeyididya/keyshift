@@ -1,0 +1,134 @@
+/* src/popup.module.css */
+
+.container {
+  padding: 20px;
+  width: 320px;
+  font-family: Arial, sans-serif;
+}
+
+.title {
+  margin: 0 0 16px 0;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.description {
+  margin: 0 0 16px 0;
+  color: #333;
+}
+
+.toggleLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.divider {
+  margin: 20px 0;
+  border: none;
+  border-top: 1px solid #eee;
+}
+
+.mappingSelector {
+  margin-bottom: 16px;
+}
+
+.mappingSelector label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: bold;
+}
+
+.mappingSelector select {
+  width: 100%;
+  padding: 6px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.customEditor {
+  margin: 16px 0;
+}
+
+.customEditor h3 {
+  margin: 0 0 8px 0;
+}
+
+.inputRow {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.inputRow input {
+  padding: 4px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.inputRow input:first-child {
+  flex: 1;
+}
+
+.inputRow input:nth-child(2) {
+  flex: 2;
+}
+
+.addButton {
+  padding: 4px 8px;
+  font-size: 14px;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.addButton:hover {
+  background: #218838;
+}
+
+.mappingList {
+  margin-top: 8px;
+}
+
+.mappingItem {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.removeButton {
+  font-size: 12px;
+  color: #dc3545;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.removeButton:hover {
+  color: #c82333;
+}
+
+.emptyState {
+  color: #888;
+  font-style: italic;
+}
+
+.previewSection h3 {
+  margin: 16px 0 8px 0;
+}
+
+.previewItem {
+  padding: 2px 0;
+}
+
+.footer {
+  margin-top: 16px;
+  font-size: 12px;
+  color: #666;
+}
