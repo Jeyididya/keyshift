@@ -3,67 +3,180 @@
 .container {
   padding: 20px;
   width: 320px;
-  font-family: Arial, sans-serif;
-}
-
-.title {
-  margin: 0 0 16px 0;
-  font-size: 20px;
-  font-weight: bold;
-}
-
-.description {
-  margin: 0 0 16px 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #fafafa;
   color: #333;
 }
 
-.toggleLabel {
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.title {
   display: flex;
   align-items: center;
-  gap: 8px;
-  cursor: pointer;
 }
 
-.divider {
-  margin: 20px 0;
-  border: none;
-  border-top: 1px solid #eee;
+.popupLogo {
+  width: 48px;
+  height: 48px;
+  margin-right: 12px;
 }
 
-.mappingSelector {
-  margin-bottom: 16px;
+.titleText {
+  display: flex;
+  flex-direction: column;
 }
 
-.mappingSelector label {
-  display: block;
-  margin-bottom: 4px;
+.titleText:first-child {
+  font-size: 22px;
   font-weight: bold;
+  margin: 0;
 }
 
-.mappingSelector select {
-  width: 100%;
-  padding: 6px;
-  font-size: 14px;
-  border: 1px solid #ccc;
+.slogan {
+  font-size: 12px;
+  color: #777;
+  margin-top: 4px;
+}
+
+.iconButton {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #555;
+  padding: 4px;
   border-radius: 4px;
 }
 
-.customEditor {
-  margin: 16px 0;
+.iconButton:hover {
+  background-color: #eee;
 }
 
-.customEditor h3 {
-  margin: 0 0 8px 0;
-}
-
-.inputRow {
-  display: flex;
-  gap: 8px;
+/* Cards */
+.card {
+  background: white;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
   margin-bottom: 16px;
 }
 
+/* Toggle */
+.toggleContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.toggleContainer span {
+  font-weight: 500;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 24px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #007bff;
+}
+
+input:checked + .slider:before {
+  transform: translateX(24px);
+}
+
+/* Select */
+select {
+  appearance: none; 
+  width: 100%;
+  padding: 8px;
+  margin-top: 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background-color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+}
+
+/* Status */
+.status {
+  text-align: center;
+}
+
+.active {
+  display: inline-block;
+  background-color: #28a745;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+
+.inactive {
+  display: inline-block;
+  background-color: #dc3545;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Custom Mapping Editor */
+.inputRow {
+  display: flex;
+  gap: 8px;
+  margin: 16px 0;
+}
+
 .inputRow input {
-  padding: 4px;
+  padding: 6px 8px;
   font-size: 14px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -78,7 +191,7 @@
 }
 
 .addButton {
-  padding: 4px 8px;
+  padding: 6px 12px;
   font-size: 14px;
   background: #28a745;
   color: white;
@@ -98,37 +211,26 @@
 .mappingItem {
   display: flex;
   justify-content: space-between;
-  padding: 4px 0;
+  padding: 6px 0;
   border-bottom: 1px solid #eee;
 }
 
 .removeButton {
-  font-size: 12px;
+  font-size: 14px;
   color: #dc3545;
   background: none;
   border: none;
   cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
 }
 
 .removeButton:hover {
-  color: #c82333;
+  background-color: #f8d7da;
 }
 
 .emptyState {
   color: #888;
   font-style: italic;
-}
-
-.previewSection h3 {
-  margin: 16px 0 8px 0;
-}
-
-.previewItem {
-  padding: 2px 0;
-}
-
-.footer {
-  margin-top: 16px;
-  font-size: 12px;
-  color: #666;
+  font-size: 13px;
 }

@@ -1,8 +1,8 @@
 // src/popup.tsx
 import { useState, useEffect } from "react"
 import { Storage } from "@plasmohq/storage"
-import { mappingNames, namedMappings } from "~mappings"
-import styles from "./popup.module.css" // ✅ Import CSS module
+import { mappingNames } from "~mappings"
+import styles from "./popup.module.css"
 
 const storage = new Storage()
 
@@ -68,39 +68,64 @@ function Popup() {
 
   return (
     <div className={styles.container}>
-      <h2 className={styles.title}>KeyShift</h2>
-      <p className={styles.description}>Transform your keystrokes in real-time!</p>
+      {/* Header */}
+      <div className={styles.header}>
+        <div className={styles.title}>
+          <img src="/icons/icon48.png" alt="KeyShift" className={styles.popupLogo} />
+          <div className={styles.titleText}>
+            KeyShift
+            <div className={styles.slogan}>Shift your keys, type your way.</div>
+          </div>
+        </div>
+        <button className={styles.iconButton} aria-label="Settings">⚙️</button>
+      </div>
 
       {/* Toggle */}
-      <label className={styles.toggleLabel}>
-        <input type="checkbox" checked={isEnabled} onChange={toggle} />
-        Enable KeyShift
-      </label>
-
-      <hr className={styles.divider} />
-
-      {/* Mapping Selector */}
-      <div className={styles.mappingSelector}>
-        <label>
-          <div><strong>Active Mapping:</strong></div>
-          <select
-            value={activeMapping}
-            onChange={(e) => switchMapping(e.target.value)}
-          >
-            <option value="default">Default (No Transformation)</option>
-            {mappingNames.map((name) => (
-              <option key={name} value={name}>
-                {name.charAt(0).toUpperCase() + name.slice(1)}
-              </option>
-            ))}
-            
-          </select>
+      <div className={`${styles.card} ${styles.toggleContainer}`}>
+        <span>Toggle conversion:</span>
+        <label className={styles.switch}>
+          <input
+            type="checkbox"
+            checked={isEnabled}
+            onChange={toggle}
+          />
+          <span className={styles.slider}></span>
         </label>
       </div>
 
-      {/* Custom Mapping Editor */}
+      {/* Language Selector Card */}
+      <div className={styles.card}>
+        <label htmlFor="lang">Select Input Type</label>
+        <select
+          id="lang"
+          value={activeMapping}
+          onChange={(e) => switchMapping(e.target.value)}
+        >
+          <option value="default">Default</option>
+          {mappingNames.map((name) => (
+            <option key={name} value={name}>
+              {name === "amharic" ? "Amharic" : name === "tigrinya" ? "Tigrinya" : name.charAt(0).toUpperCase() + name.slice(1)}
+            </option>
+          ))}
+          <option value="custom">Custom</option>
+        </select>
+      </div>
+
+      {/* Status */}
+      {/* Status */}
+     {/* Status */}
+      <div className={`${styles.card} ${styles.status}`}>
+        {!isEnabled ? (
+          <div className={styles.inactive}>⛔ Disabled</div>
+        ) : activeMapping === "default" ? (
+          <div className={styles.inactive}>🔤 Default Mode</div>
+        ) : (
+          <div className={styles.active}>⚡ Active: {activeMapping}</div>
+        )}
+      </div>
+      {/* Custom Mapping Editor (only shown if "custom" is selected) */}
       {activeMapping === "custom" && (
-        <div className={styles.customEditor}>
+        <div className={styles.card}>
           <h3>Custom Mappings</h3>
           <div className={styles.inputRow}>
             <input
@@ -142,12 +167,6 @@ function Popup() {
           </div>
         </div>
       )}
-
-
-
-      <div className={styles.footer}>
-        Example: z → ዝ, j → ጅ
-      </div>
     </div>
   )
 }
