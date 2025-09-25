@@ -246,8 +246,5 @@ export function initializeAdvanced() {
   console.log("Intialized advanced listeners for Shadow DOM & YouTube")
 
   // Re-init after 3s for late-loaded elements
-  setTimeout(() => {
-    initializeAdvanced()
-    console.log("🔁 Re-initialized advanced listeners after 3s")
-  }, 3000)
+  
 }
