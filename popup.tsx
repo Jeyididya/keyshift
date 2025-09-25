@@ -107,7 +107,7 @@ function Popup() {
               {name === "amharic" ? "Amharic" : name === "tigrinya" ? "Tigrinya" : name.charAt(0).toUpperCase() + name.slice(1)}
             </option>
           ))}
-          <option value="custom">Custom</option>
+          
         </select>
       </div>
 
@@ -123,50 +123,8 @@ function Popup() {
           <div className={styles.active}>⚡ Active: {activeMapping}</div>
         )}
       </div>
-      {/* Custom Mapping Editor (only shown if "custom" is selected) */}
-      {activeMapping === "custom" && (
-        <div className={styles.card}>
-          <h3>Custom Mappings</h3>
-          <div className={styles.inputRow}>
-            <input
-              type="text"
-              placeholder="Key (e.g. z)"
-              value={newKey}
-              onChange={(e) => setNewKey(e.target.value)}
-              maxLength={1}
-            />
-            <input
-              type="text"
-              placeholder="Replacement (e.g. ዝ)"
-              value={newValue}
-              onChange={(e) => setNewValue(e.target.value)}
-            />
-            <button
-              onClick={addCustomMapping}
-              className={styles.addButton}
-            >
-              Add
-            </button>
-          </div>
-
-          <div className={styles.mappingList}>
-            {Object.entries(customMapping).map(([key, val]) => (
-              <div key={key} className={styles.mappingItem}>
-                <span><strong>{key}</strong> → {val}</span>
-                <button
-                  onClick={() => removeCustomMapping(key)}
-                  className={styles.removeButton}
-                >
-                  ×
-                </button>
-              </div>
-            ))}
-            {Object.keys(customMapping).length === 0 && (
-              <em className={styles.emptyState}>No custom mappings. Add one above!</em>
-            )}
-          </div>
-        </div>
-      )}
+      
+      
     </div>
   )
 }
