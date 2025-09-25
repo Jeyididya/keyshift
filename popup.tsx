@@ -78,12 +78,16 @@ export default function Popup() {
     }
   
     const broadcastMessage = (message: any) => {
-      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-        if (tabs[0]?.id) {
-          chrome.tabs.sendMessage(tabs[0].id, message)
-        }
-      })
-    }
+  // Send to all tabs
+  chrome.tabs.query({}, (tabs) => {
+    tabs.forEach((tab) => {
+      if (tab.id) {
+        chrome.tabs.sendMessage(tab.id, message)
+      }
+    })
+  })
+}
+
 
 
 
