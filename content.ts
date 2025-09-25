@@ -13,7 +13,10 @@ import {
 initializeState()
 
 
-initializeAdvanced()
+setTimeout(() => {
+    initializeAdvanced()
+    console.log("🔁 -initialized advanced listeners after 3s")
+  }, 3000)
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "TOGGLE_KEYSHIFT") {
