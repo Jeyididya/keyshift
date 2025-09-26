@@ -1,0 +1,7 @@
+@import "base.css";
+
+/* Extra overrides */
+body {
+  width: 350px;
+  min-height: 400px;
+}

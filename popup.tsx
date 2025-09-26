@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 
-import "./style/globals.css"
+import "./style/popup.css"
 import logo from "data-base64:~assets/icon.png"
 
 const storage = new Storage()
