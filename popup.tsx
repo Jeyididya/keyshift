@@ -10,6 +10,7 @@ import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 
 import "./style/globals.css"
+import logo from "data-base64:~assets/icon.png"
 
 const storage = new Storage()
 
@@ -96,13 +97,7 @@ export default function Popup() {
       {/* Header with Logo and Title */}
       <div className="flex items-center gap-3 pb-3 border-b border-border">
         <div className="relative w-10 h-10 rounded-lg overflow-hidden bg-white p-1">
-          {/* <Image
-            src="/keyshift-logo.png"
-            alt="KeyShift Logo"
-            width={32}
-            height={32}
-            className="w-full h-full object-contain"
-          /> */}
+          <img src={logo} alt="KeyShift" />
         </div>
         <div>
           <h1 className="text-lg font-semibold text-foreground">KeyShift</h1>
