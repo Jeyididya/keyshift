@@ -1,6 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
+
+import {Storage} from "@plasmohq/storage"
 
 import { Switch } from "@/components/ui/switch"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -18,6 +20,8 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 
+
+const storage = new Storage()
 
 const languages = [
   { code: "default", name: "Default", flag: "🌐" },
@@ -101,6 +105,31 @@ export default function OptionsPage() {
     priority: "medium",
   })
 
+  useEffect(() => {
+        storage.get("isEnabled").then(setIsEnabled)
+        // storage.get("activeMapping").then((name) => setActiveMapping(name || "default"))
+        // storage.get("customMapping").then((map) => setCustomMapping(map || {}))
+      }, [])
+
+  const toggleExtension = async () => {
+      const newValue = !isEnabled
+      setIsEnabled(newValue)
+      await storage.set("isEnabled", newValue)
+      broadcastMessage({ type: "TOGGLE_KEYSHIFT", isEnabled: newValue })
+    }
+
+
+  const broadcastMessage = (message: any) => {
+  // Send to all tabs
+  chrome.tabs.query({}, (tabs) => {
+    tabs.forEach((tab) => {
+      if (tab.id) {
+        chrome.tabs.sendMessage(tab.id, message)
+      }
+    })
+  })
+}
+
   const toggleSection = (section: string) => {
     setOpenSections((prev) => ({ ...prev, [section]: !prev[section] }))
   }
@@ -167,7 +196,7 @@ const handleFeedbackTypeSelect = (type: "feedback" | "bug" | "feature") => {
                     </Badge>
                     <Switch
                       checked={isEnabled}
-                      onCheckedChange={setIsEnabled}
+                      onCheckedChange={toggleExtension}
                       className="data-[state=checked]:bg-primary"
                     />
                   </div>
@@ -461,7 +490,7 @@ const handleFeedbackTypeSelect = (type: "feedback" | "bug" | "feature") => {
                             </Label>
                             <Select
                               value={feedbackForm.priority}
-                              onValueChange={(value) => handleFormChange("priority", value)}
+                              onValueChange={(value) => handleFormChange("priority", value)} 
                             >
                               <SelectTrigger className="bg-input border-border text-foreground">
                                 <SelectValue />
