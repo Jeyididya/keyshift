@@ -79,7 +79,7 @@ const faqItems = [
 export default function OptionsPage() {
   const [isEnabled, setIsEnabled] = useState(true)
   const [selectedLanguage, setSelectedLanguage] = useState("default")
-  const [showAnimations, setShowAnimations] = useState(true)
+  const [showCycleAnimation, setShowCycleAnimation] = useState(true)
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
     help: false,
     features: false,
@@ -96,6 +96,7 @@ export default function OptionsPage() {
   useEffect(() => {
         storage.get("isEnabled").then(setIsEnabled)
         storage.get("activeMapping").then((name) => setSelectedLanguage(name || "default"))
+        storage.get<boolean>("showCycleAnimation").then((value) => setShowCycleAnimation(value ))
         // storage.get("customMapping").then((map) => setCustomMapping(map || {}))
       }, [])
 
@@ -104,6 +105,13 @@ export default function OptionsPage() {
       setIsEnabled(newValue)
       await storage.set("isEnabled", newValue)
       broadcastMessage({ type: "TOGGLE_KEYSHIFT", isEnabled: newValue })
+    }
+
+    const toggleCycleAnimation = async () => {
+      const newValue = !showCycleAnimation
+      setShowCycleAnimation(newValue)
+      await storage.set("showCycleAnimation", newValue)
+      broadcastMessage({ type: "TOGGLE_CYCLE_ANIMATION", isEnabled: newValue })
     }
     
     const switchMapping = async (name: string) => {
@@ -259,12 +267,12 @@ const handleFeedbackTypeSelect = (type: "feedback" | "bug" | "feature") => {
               <CardContent>
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <Badge variant={!isEnabled ? "secondary" : showAnimations ? "default" : "secondary"} className="text-sm">
-                      {showAnimations ? "ON" : "OFF"}
+                    <Badge variant={!isEnabled ? "secondary" : showCycleAnimation ? "default" : "secondary"} className="text-sm">
+                      {showCycleAnimation ? "ON" : "OFF"}
                     </Badge>
                     <Switch
-                      checked={showAnimations}
-                      onCheckedChange={setShowAnimations}
+                      checked={showCycleAnimation}
+                      onCheckedChange={toggleCycleAnimation}
                       className="data-[state=checked]:bg-primary"
                       disabled={!isEnabled}
                     />

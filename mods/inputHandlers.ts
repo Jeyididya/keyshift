@@ -4,7 +4,9 @@ import {
   defaultMapping,
   namedMappings,
   getMappingByName,
+  mappingNames,
 } from "../mappings"
+import { showMappingNotification } from "./uiNotification"
 
 const storage = new Storage()
 
@@ -133,7 +135,13 @@ export function setActiveMapping(name: string) {
     characterMap = { ...base }
   }
 
-  console.log(`Mapping switched to: ${name}`, characterMap)
+  storage.get<boolean>("showCycleAnimation").then((cycleAnimation) => {
+    console.log("z anim", cycleAnimation, "true");
+    if (cycleAnimation ) {
+      showMappingNotification(name);
+    }
+  });
+  console.log(`Mapping switcheda to: ${name}`, characterMap)
 }
 
 export function updateCustomMapping(newMap: Record<string, string>) {
@@ -219,6 +227,7 @@ export function attachListeners(root: Document | ShadowRoot = document) {
     ytSearch.dataset.listenerAttached = "true"
     console.log("✅ Attached listener to YouTube search input")
   }
+
 }
 
 export function initializeAdvanced() {
