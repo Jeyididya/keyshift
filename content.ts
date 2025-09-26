@@ -9,6 +9,8 @@ import {
   initializeAdvanced
 } from "mods/inputHandlers"
 
+import { initializeKeyboardListener } from "mods/commandListener"
+
 
 initializeState()
 
@@ -17,6 +19,8 @@ setTimeout(() => {
     initializeAdvanced()
     console.log("🔁 -initialized advanced listeners after 3s")
   }, 3000)
+
+initializeKeyboardListener()
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "TOGGLE_KEYSHIFT") {
