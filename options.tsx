@@ -19,23 +19,11 @@ import './style/options.css'
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
+import { mappingNames } from "~mappings"
 
 
 const storage = new Storage()
 
-const languages = [
-  { code: "default", name: "Default", flag: "🌐" },
-  { code: "en", name: "English", flag: "🇺🇸" },
-  { code: "es", name: "Spanish", flag: "🇪🇸" },
-  { code: "fr", name: "French", flag: "🇫🇷" },
-  { code: "de", name: "German", flag: "🇩🇪" },
-  { code: "it", name: "Italian", flag: "🇮🇹" },
-  { code: "pt", name: "Portuguese", flag: "🇵🇹" },
-  { code: "ru", name: "Russian", flag: "🇷🇺" },
-  { code: "ja", name: "Japanese", flag: "🇯🇵" },
-  { code: "ko", name: "Korean", flag: "🇰🇷" },
-  { code: "zh", name: "Chinese", flag: "🇨🇳" },
-]
 
 const features = [
   {
@@ -107,7 +95,7 @@ export default function OptionsPage() {
 
   useEffect(() => {
         storage.get("isEnabled").then(setIsEnabled)
-        // storage.get("activeMapping").then((name) => setActiveMapping(name || "default"))
+        storage.get("activeMapping").then((name) => setSelectedLanguage(name || "default"))
         // storage.get("customMapping").then((map) => setCustomMapping(map || {}))
       }, [])
 
@@ -117,18 +105,18 @@ export default function OptionsPage() {
       await storage.set("isEnabled", newValue)
       broadcastMessage({ type: "TOGGLE_KEYSHIFT", isEnabled: newValue })
     }
+    
+    const switchMapping = async (name: string) => {
+      setSelectedLanguage(name)
+      await storage.set("activeMapping", name)
+      broadcastMessage({ type: "SWITCH_MAPPING", mappingName: name })
+    }
 
 
-  const broadcastMessage = (message: any) => {
-  // Send to all tabs
-  chrome.tabs.query({}, (tabs) => {
-    tabs.forEach((tab) => {
-      if (tab.id) {
-        chrome.tabs.sendMessage(tab.id, message)
-      }
-    })
-  })
+ const broadcastMessage = (message: any) => {
+  chrome.runtime.sendMessage(message)
 }
+
 
   const toggleSection = (section: string) => {
     setOpenSections((prev) => ({ ...prev, [section]: !prev[section] }))
@@ -154,7 +142,7 @@ const handleFeedbackTypeSelect = (type: "feedback" | "bug" | "feature") => {
     setFeedbackType(null)
     setFeedbackForm({ email: "", subject: "", message: "", priority: "medium" })
   }
-  const selectedLang = languages.find((lang) => lang.code === selectedLanguage)
+  const selectedLang = ["default", ...mappingNames].find((lang) => lang === selectedLanguage)
 
   return (
     <div className="min-h-screen bg-background">
@@ -219,27 +207,37 @@ const handleFeedbackTypeSelect = (type: "feedback" | "bug" | "feature") => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <Select value={selectedLanguage} onValueChange={setSelectedLanguage} disabled={!isEnabled}>
+                  <Select value={selectedLanguage} onValueChange={switchMapping} disabled={!isEnabled}>
                     <SelectTrigger
                       className={`w-full border-border ${!isEnabled ? "bg-muted text-muted-foreground cursor-not-allowed opacity-50" : "bg-input text-foreground"}`}
                     >
                       <SelectValue>
                         <div className="flex items-center gap-2">
-                          <span className="text-base">{selectedLang?.flag}</span>
-                          <span>{selectedLang?.name}</span>
+                          <span>{selectedLang}</span>
                         </div>
                       </SelectValue>
                     </SelectTrigger>
                     <SelectContent className="bg-popover border-border">
-                      {languages.map((language) => (
+                      
                         <SelectItem
-                          key={language.code}
-                          value={language.code}
+                  key="default"
+                  value="default"
+                  className="text-popover-foreground hover:bg-accent focus:bg-accent"
+                >
+                  <div className="flex items-center gap-2">
+                    
+                    <span>Default</span>
+                  </div>
+                </SelectItem>
+                      {mappingNames.map((language) => (
+                        <SelectItem
+                          key={language}
+                          value={language}
                           className="text-popover-foreground hover:bg-accent focus:bg-accent"
                         >
                           <div className="flex items-center gap-2">
-                            <span className="text-base">{language.flag}</span>
-                            <span>{language.name}</span>
+                            
+                            <span>{language}</span>
                           </div>
                         </SelectItem>
                       ))}
