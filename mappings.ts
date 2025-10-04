@@ -52,7 +52,8 @@ export const namedMappings = {
     l: "ሊ",
     m: "ሚ",
     n: "ኒ",
-  }
+  },
+  default :{}
 }
 
 // Helper: get full mapping by name

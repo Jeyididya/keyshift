@@ -8,6 +8,8 @@ import { Switch } from "@/components/ui/switch"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { Settings } from "lucide-react"
+
 
 import "./style/popup.css"
 import logo from "data-base64:~assets/icon.png"
@@ -95,15 +97,29 @@ export default function Popup() {
   return (
     <div className="w-full min-h-screen bg-background p-4 space-y-4">
       {/* Header with Logo and Title */}
-      <div className="flex items-center gap-3 pb-3 border-b border-border">
-        <div className="relative w-10 h-10 rounded-lg overflow-hidden bg-white p-1">
-          <img src={logo} alt="KeyShift" />
-        </div>
-        <div>
-          <h1 className="text-lg font-semibold text-foreground">KeyShift</h1>
-          <p className="text-xs text-muted-foreground">Language Switching Tool</p>
-        </div>
-      </div>
+      <div className="flex items-center justify-between pb-3 border-b border-border">
+  {/* Left Side: Logo + Title */}
+  <div className="flex items-center gap-3">
+    <div className="relative w-10 h-10 rounded-lg overflow-hidden bg-white p-1">
+      <img src={logo} alt="KeyShift" />
+    </div>
+    <div>
+      <h1 className="text-lg font-semibold text-foreground">KeyShift</h1>
+      <p className="text-xs text-muted-foreground">Language Switching Tool</p>
+    </div>
+  </div>
+
+  {/* Right Side: Settings Button */}
+  <button
+  onClick={() => chrome.runtime.openOptionsPage()}
+  className="p-2 rounded-md hover:bg-muted border border-border text-muted-foreground hover:text-foreground transition"
+  title="Open Settings"
+>
+  <Settings className="w-4 h-4" />
+</button>
+
+</div>
+
 
       {/* Extension Toggle */}
       <Card className="p-4 bg-card border-border">
@@ -141,24 +157,15 @@ export default function Popup() {
                 </div>
               </SelectValue>
             </SelectTrigger>
-            <SelectContent className="bg-popover border-border">
-              <SelectItem
-                  key="default"
-                  value="default"
-                  className="text-popover-foreground hover:bg-accent focus:bg-accent"
-                >
-                  <div className="flex items-center gap-2">
-                    
-                    <span>Default</span>
-                  </div>
-                </SelectItem>
+            <SelectContent className="bg-muted text-foreground shadow-md border-border rounded-md">
+              
               {mappingNames.map((language) => (
                 <SelectItem
                   key={language}
                   value={language}
-                  className="text-popover-foreground hover:bg-accent focus:bg-accent"
+                  className="text-popover-foreground hover:bg-accent focus:bg-accent rounded-sm px-2 py-2 border-b last:border-b-0 border-border/50"
                 >
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-5">
                     
                     <span>{language}</span>
                   </div>
@@ -176,45 +183,24 @@ export default function Popup() {
             <h3 className="text-sm font-medium text-card-foreground mb-1">Active Selection</h3>
             <p className="text-xs text-muted-foreground">Currently selected language</p>
           </div>
-          <div className={`rounded-md p-3 border border-border ${!isEnabled ? "bg-muted/50 opacity-60" : "bg-muted"}`}>
+          <div className={`rounded-md p-3 border border-border ${!isEnabled ? "bg-muted/50 border-dashed text-muted-foreground" : isDefaultLanguage ? "bg-muted border-muted-foreground/30":  "border-primary/50"}`}>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                {/* <span className={`text-base ${!isEnabled ? "opacity-50" : ""}`}>{selectedLang?.flag}</span> */}
-                <span
-                  className={`text-sm font-medium ${
-                    !isEnabled
-                      ? "text-muted-foreground"
-                      : isDefaultLanguage
-                        ? "text-muted-foreground"
-                        : "text-foreground"
-                  }`}
-                >
+                <span className="text-sm font-medium">
                   {activeMapping}
                 </span>
               </div>
               <div className="flex items-center gap-1 text-xs">
-                <div
-                  className={`w-2 h-2 rounded-full ${
-                    !isEnabled
-                      ? "bg-muted-foreground/50"
-                      : isDefaultLanguage
-                        ? "bg-muted-foreground"
-                        : "bg-success animate-pulse"
-                  }`}
-                ></div>
-                <span
-                  className={
-                    !isEnabled
-                      ? "text-muted-foreground"
-                      : isDefaultLanguage
-                        ? "text-muted-foreground"
-                        : "text-foreground"
-                  }
-                >
-                  {!isEnabled ? "Disabled" : isDefaultLanguage ? "Default" : "Active"}
-                </span>
+                {!isEnabled ? (
+                  <Badge variant="secondary">Disabled</Badge>
+                ) : isDefaultLanguage ? (
+                  <Badge variant="outline">Default</Badge>
+                ) : (
+                  <Badge variant="default" className="animate-pulse">Active</Badge>
+                )}
               </div>
             </div>
+
           </div>
         </div>
       </Card>

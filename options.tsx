@@ -227,16 +227,7 @@ const handleFeedbackTypeSelect = (type: "feedback" | "bug" | "feature") => {
                     </SelectTrigger>
                     <SelectContent className="bg-popover border-border">
                       
-                        <SelectItem
-                  key="default"
-                  value="default"
-                  className="text-popover-foreground hover:bg-accent focus:bg-accent"
-                >
-                  <div className="flex items-center gap-2">
-                    
-                    <span>Default</span>
-                  </div>
-                </SelectItem>
+                        
                       {mappingNames.map((language) => (
                         <SelectItem
                           key={language}
