@@ -28,19 +28,15 @@ const storage = new Storage()
 const features = [
   {
     icon: <Keyboard className="w-4 h-4" />,
-    title: "Smart Text Selection",
-    description: "Automatically detects and translates selected text on any webpage",
+    title: "Instant Keyboard Remapping",
+    description: "Automatically detects and translates user input on any webpage",
   },
   {
     icon: <Globe className="w-4 h-4" />,
     title: "Multi-Language Support",
-    description: "Support for 10+ languages with accurate translation capabilities",
+    description: "Support for 1 language",
   },
-  {
-    icon: <Zap className="w-4 h-4" />,
-    title: "Instant Translation",
-    description: "Real-time translation with visual feedback and status indicators",
-  },
+
   {
     icon: <Eye className="w-4 h-4" />,
     title: "Visual Animations",
@@ -49,31 +45,31 @@ const features = [
 ]
 
 const faqItems = [
-  {
-    question: "How do I use KeyShift?",
-    answer:
-      "Simply select any text on a webpage, and KeyShift will automatically translate it to your chosen target language. Make sure the extension is enabled in the popup.",
-  },
-  {
-    question: "Which languages are supported?",
-    answer:
-      "KeyShift supports English, Spanish, French, German, Italian, Portuguese, Russian, Japanese, Korean, and Chinese, with more languages coming soon.",
-  },
-  {
-    question: "Why isn't the extension working?",
-    answer:
-      "Make sure the extension is enabled in the popup, you have selected a target language other than 'Default', and you have an active internet connection.",
-  },
-  {
-    question: "Can I disable the animations?",
-    answer:
-      "Yes! You can turn off language cycle animations in the settings below while keeping the core translation functionality active.",
-  },
-  {
-    question: "How do I report a bug?",
-    answer:
-      "Use the 'Send Feedback' section below to report any issues or suggest improvements. We appreciate your feedback!",
-  },
+  // {
+  //   question: "How do I use KeyShift?",
+  //   answer:
+  //     "Simply select any text on a webpage, and KeyShift will automatically translate it to your chosen target language. Make sure the extension is enabled in the popup.",
+  // },
+  // {
+  //   question: "Which languages are supported?",
+  //   answer:
+  //     "KeyShift supports English, Spanish, French, German, Italian, Portuguese, Russian, Japanese, Korean, and Chinese, with more languages coming soon.",
+  // },
+  // {
+  //   question: "Why isn't the extension working?",
+  //   answer:
+  //     "Make sure the extension is enabled in the popup, you have selected a target language other than 'Default', and you have an active internet connection.",
+  // },
+  // {
+  //   question: "Can I disable the animations?",
+  //   answer:
+  //     "Yes! You can turn off language cycle animations in the settings below while keeping the core translation functionality active.",
+  // },
+  // {
+  //   question: "How do I report a bug?",
+  //   answer:
+  //     "Use the 'Send Feedback' section below to report any issues or suggest improvements. We appreciate your feedback!",
+  // },
 ]
 
 export default function OptionsPage() {
@@ -198,7 +194,7 @@ const handleFeedbackTypeSelect = (type: "feedback" | "bug" | "feature") => {
                   </div>
                   <p className="text-sm text-muted-foreground">
                     {isEnabled
-                      ? "KeyShift will translate selected text"
+                      ? "KeyShift will apply your chosen key mapping"
                       : "KeyShift will not respond to text selection"}
                   </p>
                 </div>
@@ -210,7 +206,7 @@ const handleFeedbackTypeSelect = (type: "feedback" | "bug" | "feature") => {
               <CardHeader className="pb-3">
                 <div className="flex items-center gap-2">
                   <Globe className="w-5 h-5 text-primary" />
-                  <CardTitle className="text-lg">Target Language</CardTitle>
+                  <CardTitle className="text-lg">Active Key Mapping</CardTitle>
                 </div>
               </CardHeader>
               <CardContent>
@@ -333,8 +329,8 @@ const handleFeedbackTypeSelect = (type: "feedback" | "bug" | "feature") => {
                         },
                         {
                           step: "3",
-                          title: "Select Text",
-                          description: "Highlight any text on a webpage to see the translation.",
+                          title: "Start Typing away",
+                          description: ".",
                         },
                       ].map((item, index) => (
                         <div key={index} className="flex gap-4 p-4 rounded-lg bg-muted/20">
@@ -354,7 +350,7 @@ const handleFeedbackTypeSelect = (type: "feedback" | "bug" | "feature") => {
             </Card>
 
             {/* FAQ */}
-            <Card className="bg-card border-border">
+            {/* <Card className="bg-card border-border">
               <Collapsible open={openSections.faq} onOpenChange={() => toggleSection("faq")}>
                 <CollapsibleTrigger asChild>
                   <CardHeader className="cursor-pointer hover:bg-accent/50 transition-colors">
@@ -381,10 +377,10 @@ const handleFeedbackTypeSelect = (type: "feedback" | "bug" | "feature") => {
                   </CardContent>
                 </CollapsibleContent>
               </Collapsible>
-            </Card>
+            </Card> */}
 
             {/* Contact/Feedback */}
-            <Card className="bg-card border-border">
+            {/* <Card className="bg-card border-border">
               <CardHeader>
                 <div className="flex items-center gap-2">
                   <MessageSquare className="w-5 h-5 text-primary" />
@@ -558,7 +554,7 @@ const handleFeedbackTypeSelect = (type: "feedback" | "bug" | "feature") => {
                   )}
                 </div>
               </CardContent>
-            </Card>
+            </Card> */}
           </div>
         </div>
       </div>

@@ -143,8 +143,8 @@ export default function Popup() {
       <Card className="p-4 bg-card border-border">
         <div className="space-y-3">
           <div>
-            <h3 className="text-sm font-medium text-card-foreground mb-1">Target Language</h3>
-            <p className="text-xs text-muted-foreground">Choose the language to switch to</p>
+            <h3 className="text-sm font-medium text-card-foreground mb-1">Target Mapping</h3>
+            <p className="text-xs text-muted-foreground">Choose the mapping to switch to</p>
           </div>
           <Select value={activeMapping} onValueChange={switchMapping} disabled={!isEnabled}>
             <SelectTrigger
