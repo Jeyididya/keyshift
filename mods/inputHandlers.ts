@@ -125,6 +125,7 @@ export function setActiveMapping(name: string) {
   if (name === "default") {
     characterMap = {}
     console.log("Default mode — no transformation")
+    showMappingNotification(name);
     return
   }
 
