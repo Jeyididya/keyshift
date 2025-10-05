@@ -36,7 +36,9 @@ export default function Popup() {
 
 
   useEffect(() => {
-      storage.get("isEnabled").then(setIsEnabled)
+      storage.get("isEnabled").then((value) => {
+    setIsEnabled(value ?? true);
+  })
       storage.get("activeMapping").then((name) => setActiveMapping(name || "default"))
       storage.get("customMapping").then((map) => setCustomMapping(map || {}))
     }, [])
@@ -134,7 +136,7 @@ export default function Popup() {
             <Badge variant={isEnabled ? "default" : "secondary"} className="text-xs">
               {isEnabled ? "ON" : "OFF"}
             </Badge>
-            <Switch checked={isEnabled} onCheckedChange={toggle} className="data-[state=checked]:bg-primary" />
+            <Switch checked={!!isEnabled} onCheckedChange={toggle} className="data-[state=checked]:bg-primary" />
           </div>
         </div>
       </Card>
