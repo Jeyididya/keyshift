@@ -40,6 +40,11 @@
   "manifest": {
     "host_permissions": [
       "https://*/*"
-    ]
+    ],
+    "omnibox": {
+  "keyword": "ks"
+}
   }
+  
+
 }
