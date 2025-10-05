@@ -40,6 +40,7 @@ chrome.runtime.onMessage.addListener((msg, sender) => {
 
 import { translateTextByChar, } from "./mods/inputHandlers"
 import { getMappingByName } from "~mappings"
+import { initializeStorage } from "~mods/storageInit"
 
 
 async function translateString(input: string) {
@@ -92,6 +93,21 @@ chrome.omnibox.onInputEntered.addListener(async (text) => {
   const url = "https://www.google.com/search?q=" + encodeURIComponent(translated);
   chrome.tabs.create({ url });
 });
+
+
+chrome.runtime.onInstalled.addListener(async (details) => {
+  if (details.reason === "install") {
+    console.log("🔧 KeyShift extension installed - initializing storage")
+    await initializeStorage()
+    
+    // Optional: Open options page on install
+    chrome.runtime.openOptionsPage()
+  } else if (details.reason === "update") {
+    console.log("🔄 KeyShift extension updated - checking storage")
+    await initializeStorage()
+  }
+})
+
 
 // chrome.omnibox.onInputEntered.addListener(async (text) => {
 //   if (text === "enable") {

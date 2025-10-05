@@ -13,6 +13,7 @@ import { Settings } from "lucide-react"
 
 import "./style/popup.css"
 import logo from "data-base64:~assets/icon.png"
+import { initializeStorage } from "~mods/storageInit"
 
 const storage = new Storage()
 
@@ -36,6 +37,8 @@ export default function Popup() {
 
 
   useEffect(() => {
+
+    initializeStorage()
       storage.get("isEnabled").then((value) => {
     setIsEnabled(value ?? true);
   })

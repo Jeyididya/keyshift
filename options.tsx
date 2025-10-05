@@ -21,6 +21,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { mappingNames } from "~mappings"
+import { initializeStorage } from "~mods/storageInit"
 
 
 const storage = new Storage()
@@ -118,6 +119,7 @@ export default function OptionsPage() {
   })
 
   useEffect(() => {
+    initializeStorage()
         storage.get("isEnabled").then(setIsEnabled)
         storage.get("activeMapping").then((name) => setSelectedLanguage(name || "default"))
         storage.get<boolean>("showCycleAnimation").then((value) => setShowCycleAnimation(value ))

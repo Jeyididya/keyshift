@@ -7,6 +7,7 @@ import {
   mappingNames,
 } from "../mappings"
 import { showMappingNotification } from "./uiNotification"
+import { initializeStorage } from "./storageInit"
 
 const storage = new Storage()
 
@@ -155,6 +156,8 @@ export function updateCustomMapping(newMap: Record<string, string>) {
 
 
 export async function initializeState() {
+
+  await initializeStorage()
   const savedEnabled = await storage.get<boolean>("isEnabled")
   isEnabled = savedEnabled ?? true
 
