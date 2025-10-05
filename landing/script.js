@@ -16,12 +16,12 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Modal handling
-    const installButtons = document.querySelectorAll('.btn-primary.btn-sm, .btn-primary.btn-lg');
     const modal = document.getElementById('installModal');
+    const modalOpenButtons = document.querySelectorAll('.open-modal');
 
-    installButtons.forEach(button => {
+    modalOpenButtons.forEach(button => {
         button.addEventListener('click', function(e) {
-            e.preventDefault(); // Prevent default button action
+            e.preventDefault(); // Only prevent default for modal opener
             modal.style.display = 'flex';
         });
     });

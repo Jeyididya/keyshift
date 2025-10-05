@@ -124,6 +124,8 @@ body {
     border: none;
     outline: none;
     white-space: nowrap;
+    text-decoration: none; /* remove underline */
+    gap: 8px; /* spacing between icon and text */
 }
 
 .btn-primary {
