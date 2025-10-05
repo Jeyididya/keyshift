@@ -10,7 +10,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
-import { ChevronDown, ChevronRight, Settings, HelpCircle, MessageSquare, Zap, Globe, Keyboard, Eye, Send } from "lucide-react"
+import { ChevronDown, ChevronRight, Settings, HelpCircle, MessageSquare, Zap, Globe, Keyboard, Eye, Send, Search, Command, Chrome, 
+  Database, RefreshCw, Cpu, Code, Shield  } from "lucide-react"
 
 import logo from "data-base64:~assets/icon.png"
 
@@ -26,22 +27,49 @@ const storage = new Storage()
 
 
 const features = [
+  // Core Features
   {
     icon: <Keyboard className="w-4 h-4" />,
-    title: "Instant Keyboard Remapping",
-    description: "Automatically detects and translates user input on any webpage",
+    title: "Real-time Keyboard Remapping",
+    description: "Automatically translates keyboard input on any webpage as you type",
   },
   {
     icon: <Globe className="w-4 h-4" />,
     title: "Multi-Language Support",
-    description: "Support for 1 language",
+    description: "Handles multiple mappings",
   },
-
+  {
+    icon: <Zap className="w-4 h-4" />,
+    title: "Instant Activation",
+    description: "Toggle on/off with real-time activation - no page reloads required",
+  },
   {
     icon: <Eye className="w-4 h-4" />,
-    title: "Visual Animations",
-    description: "Optional language cycle animations for better user experience",
+    title: "Visual Feedback System",
+    description: "Smooth language switch notifications",
   },
+  
+  // Advanced Features
+  {
+    icon: <Search className="w-4 h-4" />,
+    title: "Omnibox Integration",
+    description: "Type 'ks' in address bar for Google searches",
+  },
+  {
+    icon: <Command className="w-4 h-4" />,
+    title: "Keyboard Shortcuts",
+    description: "Ctrl+Shift+L to cycle through language mappings instantly",
+  },
+  {
+    icon: <Chrome className="w-4 h-4" />,
+    title: "Universal Compatibility",
+    description: "Works on all websites, supports Shadow DOM and dynamic content",
+  },
+  {
+    icon: <Cpu className="w-4 h-4" />,
+    title: "Smart Input Handling",
+    description: "Advanced combo key sequence detection and context-aware processing",
+  }
 ]
 
 const faqItems = [
@@ -316,23 +344,43 @@ const handleFeedbackTypeSelect = (type: "feedback" | "bug" | "feature") => {
                 <CollapsibleContent>
                   <CardContent className="pt-0">
                     <div className="grid gap-6">
-                      {[
-                        {
-                          step: "1",
-                          title: "Enable the Extension",
-                          description: "Make sure KeyShift is enabled in the popup or settings page.",
-                        },
-                        {
-                          step: "2",
-                          title: "Select Target Language",
-                          description: "Choose your preferred language from the dropdown menu.",
-                        },
-                        {
-                          step: "3",
-                          title: "Start Typing away",
-                          description: ".",
-                        },
-                      ].map((item, index) => (
+                      { [
+  {
+    step: "1",
+    title: "Enable the Extension",
+    description: "Toggle the extension ON in the popup or settings page. The status badge will show 'ACTIVE' when enabled.",
+  },
+  {
+    step: "2",
+    title: "Select Your Language Mapping",
+    description: "Choose from avialable languages or Default mapping from the dropdown menu in the popup.",
+  },
+  {
+    step: "3",
+    title: "Start Typing Anywhere",
+    description: "Visit any website and type in input fields, textareas, or content-editable areas to see real-time character transformation.",
+  },
+  {
+    step: "4",
+    title: "Use Quick Language Cycling (Optional)",
+    description: "Press Ctrl+Shift+L to instantly cycle through available language mappings without opening the popup.",
+  },
+  {
+    step: "5",
+    title: "Omnibox Quick Translations",
+    description: "Type 'ks' + space in your address bar, then enter text to  search on Google.",
+  },
+  {
+    step: "6",
+    title: "Customize Visual Feedback",
+    description: "Toggle visual animations on/off in settings for language switch notifications based on your preference.",
+  },
+  {
+    step: "7",
+    title: "Works Across All Tabs",
+    description: "Your settings automatically sync across all open tabs - change once, apply everywhere instantly.",
+  }
+].map((item, index) => (
                         <div key={index} className="flex gap-4 p-4 rounded-lg bg-muted/20">
                           <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold flex-shrink-0">
                             {item.step}
