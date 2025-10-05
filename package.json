@@ -1,7 +1,7 @@
 {
   "name": "keyshift",
   "displayName": "Keyshift",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Switch input methods based on user choice.",
   "author": "j3di jedidiahandualem@gmail.com",
   "scripts": {
