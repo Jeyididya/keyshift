@@ -307,6 +307,10 @@
     </div>
 </div>
     <script src="./script.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@vercel/analytics@1.5.0/dist/index.min.js"></script>
+    <script type="module">
+        import { inject } from "https://cdn.jsdelivr.net/npm/@vercel/analytics@1.5.0/dist/index.min.js";
+        inject();
+    </script>
+
 </body>
 </html>
